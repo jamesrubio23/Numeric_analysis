@@ -1,0 +1,75 @@
+function comp2met(met1,met2)
+%La función comp2met resuelve un problema de valor inicial de la forma
+%x'=f(t,x) en [t0,T]
+%x(t0)=x0,
+%con x0 en R^n, mediante dos de los métodos que tengamos programados y compara las soluciones.
+%Lee los datos del problema del script datos.m
+%Además dibuja la solución del problema de la siguiente manera:
+
+%Si la ecuación diferencial es escalar:
+% -La gráfica de la solución por el primero de los métodos.
+% -La gráfica de la diferencia entre las soluciones obtenidas por ambos métodos.
+% -La norma infinito de la diferencia entre las soluciones obtenidas por ambos métodos.
+
+% Si la ecuación diferencial es de dimensión 2 ò 3:
+% -La gráfica de todas las componentes de la solución aproximada por el primer método.
+% -La gráfica de la diferencia entre las componentes de las soluciones obtenidas por ambos métodos.
+% -La gráfica de la trayectoria de la solución por el primero de los métodos.
+% -La norma infinito de la diferencia entre las soluciones obtenidas por ambos métodos.
+
+%%ENTRADA:
+%met1: nombre del primer método a implementar
+%met2: nombre del segundo método a implementar
+
+%%SALIDA:
+%t: vector columna de abscisas donde se va a aproximar la solución de tipo (N+1,1)
+%x: matriz de ordenadas de la solución aproximada de tipo (N+1,n)
+
+datos
+[~,x1]=met1(f,I,x0,N);
+[t,x2]=met2(f,I,x0,N);
+met1str=func2str(met1);
+x=x1-x2;
+
+n=size(x1,2); % Numero de columnas de la matriz x
+color=['r' 'g' 'b'];
+
+figure(1)
+for i=1:n
+  subplot(n,1,i)
+  plot(t,x1(:,i),color(i))
+  s=sprintf('Coordenada %d de la solucion por el método %s',i,met1str);
+  title(s)
+end
+
+figure(2)
+for i=1:n 
+  subplot(n,1,i)
+  plot(t,x(:,i),color(i))
+  s=sprintf('Coordenada %d de la diferencia de las soluciones',i);
+  title(s)
+end
+
+if n>1
+  pause(3) 
+  figure(3)
+  if n==2
+      plot(x1(:,1),x1(:,2),'r')
+      %comet(x(:,1),x(:,2))
+  else
+      %plot3(x(:,1),x(:,2),x(:,3),'r')
+      comet3(x1(:,1),x1(:,2),x1(:,3))
+  end
+end
+s=sprintf('Trayectoria de la solucion por el método %s',met1str);
+title(s)
+
+figure(4)
+ninf=max(max(abs(x)));
+y=linspace(ninf,ninf,N+1);
+l=sprintf('%g  Valor de ||x||inf', ninf);
+plot(t,y)
+legend(l)
+
+
+
