@@ -19,7 +19,7 @@ Different methods implemented in Matlab monopass or multipass to solve an initia
   
   9.- Adams'-Bashforth method of 4 steps method intializing the first steps with Runge-Kutta of order 3.
   
-  10.- Euler's explicit method.
+  9a.- Euler's explicit method.
   
   Data.- Examples of inputs.
   
