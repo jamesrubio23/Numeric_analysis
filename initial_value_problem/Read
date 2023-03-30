@@ -1,1 +1,28 @@
-Different methods implemented in Matlab monopass or multipass to solve an initial value problem
+Different methods implemented in Matlab monopass or multipass to solve an initial value problem:
+
+  1.- Given two methods that solve the problem the program analyzes the two solution.
+  
+  2.- Compares the input method with ode45 and shows different graphics to compare both solutions.
+  
+  3.- Function that compares the solution from a method with the exact solution.
+  
+  4.- Euler's improved method.
+  
+  5.- Predictive-Corrector Method that uses Adams Bashforth as the predictor method and Adams-Moulton as the corrector method. 
+     We initialize the first step with Euler's improved method.
+  
+  6.- Shows the comparison between methods ode45 and ode15.
+  
+  7.- Euler's implicit method.
+  
+  8.- Euler's modified method.
+  
+  9.- Adams'-Bashforth method of 4 steps method intializing the first steps with Runge-Kutta of order 3.
+  
+  10.- Euler's explicit method.
+  
+  Data.- Examples of inputs.
+  
+  Plot.- Function used to plot a solution.
+  
+  Upload a file 'Data' with some examples on how inputs should be given
