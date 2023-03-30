@@ -1,0 +1,58 @@
+clear all
+%El script estabs2 resuelve el problema de valor inicial
+%Dado u>0
+%x''(t)+a*(x(t)^2-b)*x'(t)+x(t)=0  t € [0,T]
+%x(0)=e0
+%x'(0)=n0,
+%cuya solución exacta es:
+%x(t)=(u^2/1+u^2)*(cos(t)-exp(-u*t)+(1/u)*sen(t))
+%Aplica los métodos ode45 y ode15 con una tolerancia de 10^-5 y representa
+%las soluciones aproximadas en dos gráficas. También representa en una
+%tercera gráfica el conjunto de los pasos utilizados en cada una de los
+%métodos.
+
+%Datos del problema:
+a=30; b=1; T=250; e0=0.1; n0=0.1;
+I=[0,T]; x0=[e0,n0]; N=24;
+
+f = @(t,x) [x(2); -a*(x(1)^2-b)*x(2)-x(1)];
+
+opciones=odeset('Stats','off', 'AbsTol',1.e-5,'RelTol',1.e-5);
+%Resolución del problema mediante el método ode45:
+[t1,x1]=ode45(f,I,x0,opciones);
+
+%Resolución del problema mediante el método ode15:
+opciones=odeset('Stats','off', 'AbsTol',1.e-5,'RelTol',1.e-5);
+[t2,x2]=ode15s(f,I,x0,opciones);
+
+%Calcula los conjuntos de los pasos de los dos métodos.
+
+n45=length(t1);
+for i=1:n45-1
+    s45(i)=t1(i+1)-t1(i); %Calcula el conjunto de distancia entre los pasos del ode45
+end
+
+n15=length(t2);
+for i=1:n15-1
+    s15(i)=t2(i+1)-t2(i); %Calcula el conjunto de distancia entre los pasos del ode15
+end
+
+%Dibuja las soluciones aproximada y los conjuntos de pasos de los métodos
+
+figure(1)
+plot(t1,x1,'b')
+title('Ecuación de Van der Pol (Método ode45)')
+
+figure(2)
+plot(t2,x2,'g')
+title('Ecuación de Van der Pol por (Método ode15s)')
+
+figure(3)
+plot(1:n45-1,s45,'b')
+hold on
+plot(1:n15-1,s15,'g')
+hold off
+s45=sprintf('Pasos considerados por el Método ode45: %d',length(t1));
+s15=sprintf('Pasos considerados por el Método ode15s: %d',length(t2));
+legend({s45,s15},"Location","southeast")
+

@@ -1,0 +1,33 @@
+clear all
+%El script estabs1 resuelve el problema de valor inicial
+%Dado u>0
+%x'=-u*(x(t)-cos(t))    t € [0,1]
+%x(0)=0,
+%cuya solución exacta es:
+%x(t)=(u^2/1+u^2)*(cos(t)-exp(-u*t)+(1/u)*sen(t))
+%mediante el Método de Euler (Explícito) dos veces con dos pasos diferentes y lo compara con la solución exacta.
+%Además dibuja en la misma ventana la solución exacta del problema y las dos soluciones con los dos pasos diferentes
+
+%Datos del problema:
+u=50; I=[0,1]; x0=0; N1=24; N2=25;
+f = @(t,x) -u*(x-cos(t));
+sol = @(t) (u^2/(1+u^2))*(cos(t)-exp(-u*t)+sin(t)/u);
+
+%Resolución del problema mediante el método de Euler (Explícito) con dos
+%pasos doiferentes N1 y N2
+[t1,x1]=meuler(f,I,x0,N1);
+[t2,x2]=meuler(f,I,x0,N2);
+
+%Dibuja las soluciones
+
+figure(1)
+fplot(sol, I, 'r')
+hold on
+plot(t1,x1,'b')
+hold on
+plot(t2,x2,'g')
+hold off
+s1=sprintf('Solución aproximada con %d nodos',N1+1);
+s2=sprintf('Solución aproximada con %d nodos',N2+1);
+legend({'Solución exacta', s1, s2}, "Location","southwest")
+

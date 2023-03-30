@@ -1,0 +1,45 @@
+function [t,x]=mab2mam2(f,I,x0,N)
+%La función mab2mam2 resuelve un problema de valor inicial de la forma
+%x'=f(t,x) en [t0,T]
+%x(t0)=x0,
+%con x0 en R^n, mediante el Método de Predicción-Corrección tomando como el Método Predictor el
+%Método de Adams-Bashforth de 2 pasos, como el corrector el Método de Adams-Moulton de dos pasos.
+% El primer paso lo inicializa con el Método de Euler Mejorado.
+
+%%ENTRADA:
+%f: nombre de la función (definida en formato anónimo o como fichero de tipo función de Matlab)
+%del problema que se quiere resolver, con dos argumentos de entrada: el primero es un
+%número real y el segundo es un vector fila de tipo (1,n)
+%I: [t0,T],donde está planteado el sistema de ecuaciones diferenciales
+%x0: vector inicial de tipo (1,n)
+%N: número de subintervalos
+
+%%SALIDA:
+%t: vector columna de abscisas donde se va a aproximar la solución de tipo (N+1,1)
+%x: matriz de ordenadas de la solución aproximada de tipo (N+1,n)
+
+h=(I(2)-I(1))/N;
+t=linspace(I(1),I(2), N+1);
+t=t(:);
+
+%Inicialización con el Método de Euler Mejorado.
+
+x(1,:)=x0;
+
+aux(1,:)=f(t(1),x(1,:)).';
+F2=f(t(1), x(1,:) + h*aux(1,:)).';
+
+x(2,:)=x(1,:) + (h/2)*(aux(1,:)+F2);
+
+%Paso general del Método de Predicción-Corrección:
+
+for i=1:N-1
+    aux(2,:)=f(t(i+1),x(i+1,:)).'; %Calcula la evaluación de f del último paso calculado
+        
+    xaux=x(i+1,:) + h/2*(3*aux(2,:)-aux(1,:)); % Predicción de x(i+2,:) por el Método Adams-Bashforth de 2 pasos
+    
+    x(i+2,:)=x(i+1,:) + h/12 *(5*f(t(i+2), xaux).' + 8*aux(2,:) - aux(1,:)); %Corrección del valor x(i+2,:) por el método de Adams-Moulton de 2 pasos
+    
+    aux(1,:)=aux(2,:); %Reordena la matriz auxiliar (dejando las dos últimas columnas iguales)
+end
+

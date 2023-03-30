@@ -1,0 +1,35 @@
+clear all
+%El script estabs2 resuelve el problema de valor inicial
+%Dado u>0
+%x'=-u*(x(t)-cos(t))    t € [0,1]
+%x(0)=0,
+%cuya solución exacta es:
+%x(t)=(u^2/1+u^2)*(cos(t)-exp(-u*t)+(1/u)*sen(t))
+%mediante el Método de Euler Implícito y lo compara con la solución exacta.
+%Además dibuja en la misma ventana la solución exacta del problema y la solución aproximada.
+
+%Datos del problema:
+u=50; I=[0,1]; x0=0; N=24;
+f = @(t,x) -u*(x-cos(t));
+sol = @(t) (u^2/(1+u^2))*(cos(t)-exp(-u*t)+sin(t)/u);
+
+%Resolución del problema mediante el método de Euler Implícito
+h=(I(2)-I(1))/N;
+t=linspace(I(1),I(2), N+1);
+t=t(:);
+
+x(1)=x0;
+for i=1:N
+    %Tras despejar la ecuación en cada paso queda el método:
+    x(i+1)=(x(i) + h*u*cos(t(i+1)))/(1+h*u);
+end
+%Dibuja las soluciones
+
+figure(1)
+fplot(sol, I, 'r')
+hold on
+plot(t,x,'b')
+hold off
+s=sprintf('Solución aproximada con %d nodos',N+1);
+legend({'Solución exacta', s},"Location","southeast")
+
