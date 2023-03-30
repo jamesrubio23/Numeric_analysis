@@ -1,4 +1,4 @@
-Different methods implemented in Matlab monopass or multipass to solve an initial value problem:
+Different methods implemented in **MATLAB** monopass or multipass to solve an initial value problem:
 
   1.- Given two methods that solve the problem the program analyzes the two solution.
   
